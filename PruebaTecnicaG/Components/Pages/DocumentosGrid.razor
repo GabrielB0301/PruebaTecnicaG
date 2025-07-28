@@ -1,0 +1,43 @@
+﻿@page "/documentos"  
+@using PruebaTecnicaG.Models
+@using PruebaTecnicaG.Services
+@inject ApiService ApiService
+
+
+<h3>Listado de Documentos</h3>
+
+@if (documentos == null)
+{
+    <p>Cargando datos...</p>
+}
+else
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Código</th>
+                <th>Descripción</th>
+                <th>Activo</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var doc in documentos)
+            {
+                <tr>
+                    <td>@doc.Codigo</td>
+                    <td>@doc.Descripcion</td>
+                    <td>@(doc.VActiva ? "Sí" : "No")</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+@code {
+    private List<Documento> documentos;
+
+    protected override async Task OnInitializedAsync()
+    {
+        documentos = await ApiService.GetDocumentosAsync();
+    }
+}
